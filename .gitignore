@@ -1,0 +1,12 @@
+node_modules
+composer/vendor
+composer.lock
+rust/**/Cargo.lock
+rust/**/target
+crypto-rust/**/Cargo.lock
+crypto-rust/**/target
+apparatus
+source
+src
+settings.json
+package-lock.json

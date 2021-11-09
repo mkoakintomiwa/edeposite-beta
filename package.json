@@ -1,0 +1,28 @@
+{
+  "name": "e-deposite",
+  "version": "1.0.0",
+  "description": "Send file to corresponding path in public_html of  remote server even if you dont have shell access ",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ftp",
+    "hftp",
+    "ssh"
+  ],
+  "author": "Akintomiwa Opemipo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mkoakintomiwa/hftp/issues"
+  },
+  "homepage": "https://github.com/mkoakintomiwa/hftp#readme",
+  "dependencies": {
+    "@types/jquery": "^3.5.4",
+    "@types/lodash": "^4.14.162",
+    "@types/materialize-css": "^1.0.8",
+    "@types/sweetalert": "^2.0.4",
+    "googleapis": "^39.2.0",
+    "jquery": "^3.5.1"
+  }
+}
