@@ -111,6 +111,32 @@ $head_script = "
 ";
 
 
+$json_encoded_user = json_encode($user)?:'{}';
+
+$react_scripts = <<<EOF
+<script>
+    var ajax = '$ajax';
+    var organizationLogo = '$organization_logo';
+    var portalUrl = '$portal_url';
+    var relDirname = '$rel_dirname';
+    var user = $json_encoded_user;
+</script>
+EOF;
+
+
+$head_content = <<<EOF
+<meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<meta name='theme-color' content='$theme_color'>
+<link rel='shortcut icon' href='$organization_logo'/>
+EOF;
+
+$fonts = ['Roboto','Playfair Display', 'Google Sans', 'Special Elite'];
+
+foreach ($fonts as $font){
+    $head_content.="<link href='https://fonts.googleapis.com/css?family=$font' rel='stylesheet'>";
+}
+
 
 $grids = [
     [1,2,1],

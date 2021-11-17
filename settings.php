@@ -124,4 +124,21 @@ $general_images = $portal_url."/images";
 $assets = $dirname . "/assets";
 
 
+function show_errors(){
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+}
+
+function hide_errors(){
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 0);
+    error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
+}
+
+
+hide_errors();
+//show_errors();
+
+
 ?>

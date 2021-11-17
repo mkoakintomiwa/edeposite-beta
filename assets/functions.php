@@ -1633,4 +1633,149 @@ function encoded_url($location,$array=[]){
     }
     return $r;
 }
+
+
+class TransactionEmailAlert{
+
+    private $sender_address;
+    private $recipient_address;
+    private $sender;
+    private $recipient;
+    private $token;
+    private $date;
+    private $time;
+    private $transaction_id;
+
+    function __construct($sender_address, $recipient_address){
+        $this->sender_address = $sender_address;
+        $this->recipient_address = $recipient_address;
+        $this->sender = user($sender_address);
+        $this->recipient = user($recipient_address);
+    }
+
+
+    public function setToken($token){
+        $this->token = $token;
+        return $this;
+    }
+
+
+    public function setDate($date){
+        $this->date = $date;
+        return $this;
+    }
+
+
+    public function setTime($time){
+        $this->time = $time;
+        return $this;
+    }
+
+
+    public function setTranscationId($transaction_id){
+        $this->transaction_id = $transaction_id;
+        return $this;
+    }
+
+
+    public function send(){
+        foreach ([
+            [
+                "type"=>"credit",
+                "label"=>"Credit"
+            ],
+            [
+                "type"=>"debit",
+                "label"=>"Debit"
+            ]
+        ] as $transaction) {
+
+            $mail = phpmailer();
+            $mail->Subject = "eDT Transaction Alert [$transaction[label]: {$this->token}eDT]";
+            $message_body = $this->message($transaction["type"]);
+            $mail->Body = $message_body;
+
+            $mail->AltBody = innertext($message_body);
+
+            $user = $this->accountUser($transaction["type"]);
+
+            $mail->addAddress($user->email_address);
+            $mail->preSend();
+
+            Gmail::send($mail->getSentMIMEMessage());
+        }
+        
+    }
+
+
+    private function accountUser($transaction_type){
+        switch($transaction_type){
+            case "credit":
+                $user = $this->recipient;
+            break;
+
+            case "debit":
+                $user = $this->sender;
+            break;
+        }
+        return $user;
+    }
+
+
+    private function message($transaction_type){
+
+        global $organization_logo;
+
+        switch($transaction_type){
+            case "credit":
+                $transaction_label = "Credit";
+                $user_address = $this->recipient_address;
+            break;
+
+            case "debit":
+                $transaction_label = "Debit";
+                $user_address = $this->sender_address;
+            break;
+        }
+
+        $user = $this->accountUser($transaction_type);
+
+        return "
+        <!DOCTYPE html>
+            <div>
+                <div style='margin-bottom: 30px; text-align: center;'>
+                    <img src='$organization_logo' style='width: 100px; height: 100px' >
+                </div>
+                <div style='margin-bottom: 5px;'>Dear  <b>$user_address</b></div>
+                
+                <div style='margin-bottom: 5px;'>
+                    We wish to inform you that a $transaction_label transaction occurred on your account with us.
+                </div>
+                
+                <div style='margin-bottom: 15px;'>
+                    The details of this transaction are shown below:
+                </div>
+                
+                <div style='font-weight: 600; text-decoration: underline; font-size: 15px;'>Transaction Notification</div>
+                <div style='margin-top: 7px'>Account Address : $user->public_address</div>
+                <div style='margin-top: 7px'>Amount	:	<b>{$this->token}eDT</b></div>
+                <div style='margin-top: 7px'>Value Date	:	$this->date</div>
+                <div style='margin-top: 7px'>Time of Transaction :	$this->time</div>
+                <div style='margin-top: 7px'>Document Number :	$this->transaction_id</div>
+
+                <div style='margin-top: 20px'>The balances on this account as at  $this->time  are as follows:</div>
+                
+                <div style='margin-top: 5px'>Current Balance : <b>{$user->token}eDT</b></div>
+                
+                <div style='margin-top: 3px'>Current Bonus : <b>{$user->bonus}eDB</b></div>
+                
+                <div style='margin-top: 20px'>Please always remember to keep your private key safe to avoid security breaches on your account. Avoid registering with your private with untrusted third party applications. Your security means alot to us.</div>
+                
+                <div style='margin-top: 20px'>Regards</div>
+                <div>eDeposite Cryptocurrency</div>
+            </div>
+        ";
+    }
+}
+
 ?>

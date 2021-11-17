@@ -13,7 +13,7 @@ function conn($db=false){
 
     if($db===$db_name){
         if (!isset($conn)){    
-            $conn = new PDO("mysql:host=localhost;dbname=$db",$db_user,$db_password,[
+            $conn = new PDO("mysql:host=127.0.0.1;dbname=$db",$db_user,$db_password,[
                 PDO::ATTR_PERSISTENT => true
             ]);
             $conn -> setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
@@ -346,17 +346,6 @@ function set_accounts_cookie($accounts){
     setcookie('accounts',json_encode($accounts),time()+5*365*24*60*60,"$rel_dirname");
 }
 
-
-function show_errors(){
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
-}
-
-function hide_errors(){
-    ini_set('display_errors', 0);
-    error_reporting(0);
-}
 
 
 function real_list($li){
@@ -722,8 +711,5 @@ function delete_by_id($table_name,$row_id,$db_conn=null){
 
     $_conn->prepare("DELETE FROM `$table_name` WHERE id=?")->execute([$row_id]);
 }
-
-//hide_errors();
-//show_errors();
 
 ?>

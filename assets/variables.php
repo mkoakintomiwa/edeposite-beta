@@ -8,7 +8,7 @@ if (class_exists("Twig\\Environment")){
 }
 
 
-$login_page = "$rel_dirname/users/log-in.php";
+$login_page = "$rel_dirname/users/login";
 
 $default_title = "eDeposite | Africa Centered CryptoCurrency";
 

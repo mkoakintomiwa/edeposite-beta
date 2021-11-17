@@ -10,3 +10,8 @@ source
 src
 settings.json
 package-lock.json
+tmp
+error.log
+.htaccess
+.vscode
+.webman
